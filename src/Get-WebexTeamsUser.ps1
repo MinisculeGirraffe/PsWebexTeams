@@ -1,13 +1,13 @@
 function Get-WebexTeamsUser {
     param (
         $Email,
-        $DisplayName,
-        $Token
+        $DisplayName
+
     )
     $body = @{
         email = $Email
     }
-    $res = Invoke-RestMethod -Headers @{"Authorization" = "Bearer $Token" }`
+    $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `
         -ContentType "application/json" `
         -uri 'https://webexapis.com/v1/people' `
         -body $body
