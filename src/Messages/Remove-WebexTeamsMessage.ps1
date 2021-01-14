@@ -7,7 +7,6 @@ function Remove-WebexTeamsMessage {
     $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `
         -ContentType "application/json" `
         -uri "https://webexapis.com/v1/messages/$id" `
-        -body $body `
         -Method Delete
-    return $res.items
+    return $res
 }
