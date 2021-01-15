@@ -1,7 +1,8 @@
 function Get-WebexTeamsRoom {
     param (
+        
         [string]$teamID,
-        [ValidateSet("Group", "Direct")]
+        [ValidateSet("group", "direct")]
         [string]$type,
         [int]$max
 

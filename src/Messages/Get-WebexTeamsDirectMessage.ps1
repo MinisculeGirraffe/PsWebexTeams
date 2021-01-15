@@ -1,12 +1,14 @@
 function  Get-WebexTeamsDirectMessage {
     param (
-        $personID,
-        $parentID,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('id')]
+        $personId,
+        $parentId,
         $email
     )
     $body = @{
-        personID = $personID
-        parentID = $parentID
+        personId = $personId
+        parentId = $parentId
         personEmail = $email
     }
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }

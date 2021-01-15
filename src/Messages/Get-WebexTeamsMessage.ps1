@@ -1,6 +1,7 @@
 function Get-WebexTeamsMessage {
     param (
         [Parameter(ValueFromPipelineByPropertyName,mandatory=$true)]
+        [Alias('id')]
         [string]$roomId,
         [datetime]$before,
         [string]$beforeMessage,
