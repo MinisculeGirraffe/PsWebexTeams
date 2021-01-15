@@ -2,14 +2,14 @@ function Set-WebexTeamsRoom {
     param (
         [Parameter(ValueFromPipelineByPropertyName, Mandatory)]
         [alias('id')]
-        [string]$roomID,
+        [string]$roomId,
         [Parameter(Mandatory)]
         [string]$title,
         [string]$classificationID
         
     )
     $body = @{
-        teamID           = $teamID
+        roomId           = $roomId
         title            = $title
         classificationID = $classificationID
     }
