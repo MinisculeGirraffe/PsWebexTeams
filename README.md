@@ -17,6 +17,7 @@ Install-Module PsWebexTeams
 Set-WebexTeamsCredential -token  <API Token>
 #Lookup User
 Get-WebexTeamsUser -email <email>
+#Send Message
 ```
 
 ## Contributing

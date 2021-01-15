@@ -4,7 +4,7 @@ function Resolve-WebexTeamsConfigPath {
 
     }
     elseif ([System.Environment]::OSVersion.Platform -eq "Unix" -eq $true) {
-        return "$env:HOMHE/.config/powershell/PSWebexTeamsConfig.xml"
+        return "$env:HOME/.config/powershell/PSWebexTeamsConfig.xml"
     }
     else {
         return $null
