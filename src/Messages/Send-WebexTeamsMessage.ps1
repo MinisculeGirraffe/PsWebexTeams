@@ -8,7 +8,6 @@ function Send-WebexTeamsMessage {
         [alias('id')]
         $roomID,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [alias('id')]
         $personID,
         $parentID,
         [Parameter(ParameterSetName='text')]
