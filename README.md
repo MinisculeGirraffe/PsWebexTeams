@@ -9,6 +9,12 @@ Use Install-Module to install from [PowerShell Gallery](https://www.powershellga
 ```Powershell
 Install-Module PsWebexTeams
 ```
+## Getting an API Token
+Currently, the recomended method is to (generate a bot account)[https://developer.webex.com/docs/bots] as it uses a static token. 
+
+If you need to act on behalf your own account temporarily using your (personal access token)[https://developer.webex.com/docs/api/getting-started] is the simplest method.
+
+Generating an oauth token from an (integration)[https://developer.webex.com/docs/integrations] for long term use is the reccomended way to interact with ther API on behalf of a user.  This is now yet supported in the module. 
 
 ## Usage
 
