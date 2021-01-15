@@ -12,7 +12,7 @@ function Get-WebexTeamsMemberships {
         max = $max
     }
 
-    ($body.GetEnumerator() | ? { -not $_.Value }) | % { $body.Remove($_.Name) }
+    ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
 
     $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `
         -ContentType "application/json" `

@@ -2,7 +2,9 @@
 function Send-WebexTeamsMessage {
     param (
         $email,
+        [Parameter(Mandatory)]
         $Text,
+        [Parameter(ValueFromPipelineByPropertyName)]
         $roomID,
         [switch]$markdown
     )
