@@ -9,9 +9,12 @@ Use Install-Module to install from [PowerShell Gallery](https://www.powershellga
 ```Powershell
 Install-Module PsWebexTeams
 ```
-#Getting Started
-## Authentication
+
+##Getting Started
+
 The primary goal of this module is interacting with Webex teams without state. This is not for building a chatbot.  If that’s what you’re looking to do, please use the[ nodeJS bot framework](https://developer.webex.com/blog/introducing-the-webex-teams-bot-framework-for-node-js) to support web hooks.
+
+### Authentication
 
 API tokens will be saved in the following directories.
 - Windows:
@@ -21,7 +24,7 @@ API tokens will be saved in the following directories.
 
 When running any commands, they will check this file for the auth token to prevent authentication params having to be passed to each function.
 
-### Bot Auth
+#### Bot Auth
 The easiest way to get started with this module is to use a bot. The authentication tokens are static, and won’t have to be refreshed. See  Webex documentation for more info in [creating bots](https://developer.webex.com/docs/bots).
 
 Once we’ve created out bot API keys we need to save them to our PC.
@@ -30,7 +33,7 @@ Once we’ve created out bot API keys we need to save them to our PC.
 Set-WebexTeamsCredential -token  <API Token>
 ```
 
-### OAuth (User Authentication)
+#### OAuth (User Authentication)
 To act on behalf of a user account, you first need to setup [an integration](https://developer.webex.com/docs/integrations)
 
 The OAuth flow can be completed without running a web server. Set the redirectUri to be a non-existent domain/one that you own.
@@ -62,8 +65,6 @@ $token = New-WebexTeamsAccessToken -clientID $config.refreshinfo.client_id `
 	-refreshToken $config.refreshinfo.refresh_token
 }
 ```
-
-
 
 ## Usage
 
