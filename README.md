@@ -10,11 +10,11 @@ Use Install-Module to install from [PowerShell Gallery](https://www.powershellga
 Install-Module PsWebexTeams
 ```
 
-##Getting Started
 
-The primary goal of this module is interacting with Webex teams without state. This is not for building a chatbot.  If that’s what you’re looking to do, please use the[ nodeJS bot framework](https://developer.webex.com/blog/introducing-the-webex-teams-bot-framework-for-node-js) to support web hooks.
+
 
 ### Authentication
+The primary goal of this module is interacting with Webex teams without state. This is not for building a chatbot.  If that’s what you’re looking to do, please use the[ nodeJS bot framework](https://developer.webex.com/blog/introducing-the-webex-teams-bot-framework-for-node-js) to support web hooks.
 
 API tokens will be saved in the following directories.
 - Windows:
