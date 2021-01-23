@@ -9,13 +9,61 @@ Use Install-Module to install from [PowerShell Gallery](https://www.powershellga
 ```Powershell
 Install-Module PsWebexTeams
 ```
+#Getting Started
+## Authentication
+The primary goal of those module is interacting with Webex teams without state. This is not for building a chat bot.  If that’s what you’re looking to do, please use the[ nodeJS bot framework](https://developer.webex.com/blog/introducing-the-webex-teams-bot-framework-for-node-js) to support web hooks.
 
-## Getting an API Token
-Currently, the recomended method is to [generate a bot account](https://developer.webex.com/docs/bots) as it uses a static token. 
+API tokens will be saved in the following directories.
+- Windows:
+`"$env:LOCALAPPDATA\PSWebexTeams\PSWebexTeamsConfig.xml"`
+- MacOS / Linux
+`"$env:HOME/.config/powershell/PSWebexTeamsConfig.xml"`
 
-If you need to act on behalf your own account temporarily using your [personal access token](https://developer.webex.com/docs/api/getting-started) is the simplest method.
+When running any commands, they will check this file for the auth token to prevent authentication params having to be passed to each function.
 
-Generating an oauth token from an [integration](https://developer.webex.com/docs/integrations) for long term use is the reccomended way to interact with ther API on behalf of a user.  This is not yet supported in the module. 
+### Bot Auth
+The easiest way to get started with this module is to use a bot. The authentication tokens are static, and won’t have to be refreshed. See  Webex documentation for more info in [creating bots](https://developer.webex.com/docs/bots).
+
+Once we’ve created out bot API keys we need to save them to our PC.
+
+```powershell
+Set-WebexTeamsCredential -token  <API Token>
+```
+
+### OAuth (User Authentication)
+To act on behalf of a user account, you first need to setup [an integration](https://developer.webex.com/docs/integrations)
+
+The OAuth flow can be completed without running a web server. Set the redirectUri to be a non-existent domain/one that you own.
+
+You will be given two pieces of information, A client ID and Secret. Save both off to the side for now.
+
+You will need to authorize the integration to act on behalf of your account, there will be a pre-generated link on the integration. Paste the link into your browser to grant an authentication code. You can exchange your authentication code into a refresh token by running the following.
+```powershell
+$splat = @{
+    clientID     = 'Replace Me'
+    clientSecret = 'Replace Me'
+    redirectURI  = "Replace Me"
+    accessCode   = "Replace Me"
+}
+
+$refreshInfo = New-WebexTeamsRefreshToken @splat
+Set-WebexTeamsCredential -token $refreshInfo.access_token -refreshinfo $refreshInfo
+```
+
+A hook is built into each command to re-issue a refresh/access token when necessary. If no commands are ran within 90 days, the authentication code process will have to be repeated to issue a new refresh token. 
+
+To manually issue a new access token, and reset the refresh token’s 90-day timer run the following
+
+```powershell
+$configpath = Resolve-WebexTeamsConfigPath
+$config = Import-Clixml $configpath
+$token = New-WebexTeamsAccessToken -clientID $config.refreshinfo.client_id `
+	-clientSecret $config.refreshinfo.client_secret `
+	-refreshToken $config.refreshinfo.refresh_token
+}
+```
+
+
 
 ## Usage
 
