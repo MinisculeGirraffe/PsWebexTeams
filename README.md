@@ -11,8 +11,6 @@ Install-Module PsWebexTeams
 ```
 
 
-
-
 ### Authentication
 The primary goal of this module is interacting with Webex teams without state. This is not for building a chatbot.  If that’s what you’re looking to do, please use the[ nodeJS bot framework](https://developer.webex.com/blog/introducing-the-webex-teams-bot-framework-for-node-js) to support web hooks.
 
@@ -53,16 +51,16 @@ $refreshInfo = New-WebexTeamsRefreshToken @splat
 Set-WebexTeamsCredential -token $refreshInfo.access_token -refreshinfo $refreshInfo
 ```
 
-A hook is built into each command to re-issue a refresh/access token when necessary. If no commands are ran within 90 days, the authentication code process will have to be repeated to issue a new refresh token. 
+A hook is built into each command to re-issue a refresh/access token when necessary. If no commands are ran within 90 days, the authentication code process will have to be repeated to issue a new refresh token. To check the lifetime on your 90 day token run the following
+
+```powershell
+Get-WebexTeamsCredentialTime
+```
 
 To manually issue a new access token, and reset the refresh token’s 90-day timer run the following
 
 ```powershell
-$configpath = Resolve-WebexTeamsConfigPath
-$config = Import-Clixml $configpath
-$token = New-WebexTeamsAccessToken -clientID $config.refreshinfo.client_id `
-	-clientSecret $config.refreshinfo.client_secret `
-	-refreshToken $config.refreshinfo.refresh_token
+Get-WebexTeamsCredential -Renew
 }
 ```
 
@@ -73,12 +71,19 @@ $token = New-WebexTeamsAccessToken -clientID $config.refreshinfo.client_id `
 Set-WebexTeamsCredential -token  <API Token>
 #Lookup User
 Get-WebexTeamsUser -email <Email>
-#Lookup messages from user
+Get-ADUser username -pro mail | Get-WebexTeamsUser
+#Lookup messages from user. Max 50.
 Get-WebexTeamsUser -email <Email> | Get-WebexTeamsDirectMessage
 Get-WebexTeamsDirectMessage -email <User>
 
-#Lookup messages from a room by name
+
+#Lookup ALL messages from room
 Get-WebexTeamsRoom | ? { $_.title -eq "Name" }| Get-WebexTeamsMessage
+
+#Lookup last 100 messages from room
+Get-WebexTeamsRoom | ? { $_.title -eq "Name" }| Get-WebexTeamsMessage -max 100
+
+#Lookup messages before date
 
 #Send message to room
 Get-WebexTeamsRoom | ? { $_.title -eq "Name" } | Send-WebexTeamsMessage -text <Text>
@@ -86,6 +91,10 @@ Get-WebexTeamsRoom | ? { $_.title -eq "Name" } | Send-WebexTeamsMessage -text <T
 #Send message to a user
 Send-WebexTeamsMessgae -email <Email> -text <Text>
 
+
+
+#Edit a message. Messages can only be edited 10 times.
+Set-WebexTeamsMessage -messageID <> -Text "Edit"
 ```
 
 ## Contributing

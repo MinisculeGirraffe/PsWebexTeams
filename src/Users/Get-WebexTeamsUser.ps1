@@ -1,7 +1,9 @@
 function Get-WebexTeamsUser {
     param (
-        $Email,
-        $DisplayName,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [alias('mail')]
+        [string]$Email,
+        [string]$DisplayName,
         [Parameter(ValueFromPipelineByPropertyName)]
         $id,
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -9,7 +11,6 @@ function Get-WebexTeamsUser {
         [Parameter(ValueFromPipelineByPropertyName)]
         $locationID,
         $max
-
     )
     $body = @{
         id         = $id

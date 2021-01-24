@@ -4,7 +4,8 @@ function Get-WebexTeamsRoom {
         [string]$teamID,
         [ValidateSet("group", "direct")]
         [string]$type,
-        [int]$max
+        [ValidateRange(1,1000)]
+        [int]$max = 1000
 
     )
     $body = @{

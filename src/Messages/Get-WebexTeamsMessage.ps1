@@ -1,11 +1,12 @@
 function Get-WebexTeamsMessage {
     param (
-        [Parameter(ValueFromPipelineByPropertyName,mandatory=$true)]
+        [Parameter(ValueFromPipelineByPropertyName, mandatory = $true)]
         [Alias('id')]
         $roomId,
         [datetime]$before,
         [string]$beforeMessage,
-        [int]$max
+        [ValidateRange(1, [Int32]::MaxValue)]
+        [int32]$max = [Int32]::MaxValue
     )
     $body = @{
         roomId        = $roomId
