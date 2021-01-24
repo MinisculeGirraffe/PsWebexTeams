@@ -1,4 +1,4 @@
-function Remove-WebexTeamsMessage {
+function Get-WebexTeamsMessageDetails {
     param (
         [Parameter(ValueFromPipelineByPropertyName, mandatory = $true)]
         [alias('id')]
@@ -8,7 +8,7 @@ function Remove-WebexTeamsMessage {
         $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `
             -ContentType "application/json" `
             -uri "https://webexapis.com/v1/messages/$messageId" `
-            -Method Delete
+            -Method Get
         return $res
     }
     catch {

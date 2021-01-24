@@ -18,6 +18,7 @@ function Get-WebexTeamsUser {
         orgID      = $orgId
         locationID = $locationID
         max        = $max
+        displayName = $DisplayName
     }
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
     $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `

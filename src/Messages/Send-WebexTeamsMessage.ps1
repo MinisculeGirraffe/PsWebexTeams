@@ -10,7 +10,7 @@ function Send-WebexTeamsMessage {
         [Parameter(ValueFromPipelineByPropertyName)]
         $personID,
         $parentID,
-        [Parameter(ParameterSetName='text')]
+        [Parameter(ParameterSetName = 'text')]
         [string]$markdown
     )
 
@@ -18,15 +18,20 @@ function Send-WebexTeamsMessage {
         toPersonEmail = $email
         text          = $Text
         roomId        = $roomID
-        parentId = $parentID
-        markdown = $markdown
+        parentId      = $parentID
+        markdown      = $markdown
     }
 
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
-    $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential)`
-        -ContentType "application/json" `
-        -uri "https://api.ciscospark.com/v1/messages" `
-        -Method Post `
-        -body ($body | ConvertTo-Json)
-    return $res
+    try {
+        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential)`
+            -ContentType "application/json" `
+            -uri "https://api.ciscospark.com/v1/messages" `
+            -Method Post `
+            -body ($body | ConvertTo-Json)
+        return $res
+    }
+    catch {
+        Write-Error ($_.ErrorDetails.Message | ConvertFrom-Json).message
+    }
 }

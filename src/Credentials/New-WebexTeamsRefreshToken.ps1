@@ -25,7 +25,7 @@ function New-WebexTeamsRefreshToken {
         
     }
     catch {
-        throw $_
+        Write-Error ($_.ErrorDetails.Message | ConvertFrom-Json).message
     }
    return $res
 }  

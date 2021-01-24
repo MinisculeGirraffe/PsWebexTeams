@@ -10,7 +10,6 @@ Use Install-Module to install from [PowerShell Gallery](https://www.powershellga
 Install-Module PsWebexTeams
 ```
 
-
 ### Authentication
 The primary goal of this module is interacting with Webex teams without state. This is not for building a chatbot.  If that’s what you’re looking to do, please use the[ nodeJS bot framework](https://developer.webex.com/blog/introducing-the-webex-teams-bot-framework-for-node-js) to support web hooks.
 
@@ -71,7 +70,9 @@ Get-WebexTeamsCredential -Renew
 Set-WebexTeamsCredential -token  <API Token>
 #Lookup User
 Get-WebexTeamsUser -email <Email>
+Get-WebexTeamsUser -DisplayName "John Doe"
 Get-ADUser username -pro mail | Get-WebexTeamsUser
+
 #Lookup messages from user. Max 50.
 Get-WebexTeamsUser -email <Email> | Get-WebexTeamsDirectMessage
 Get-WebexTeamsDirectMessage -email <User>
@@ -83,7 +84,8 @@ Get-WebexTeamsRoom | ? { $_.title -eq "Name" }| Get-WebexTeamsMessage
 #Lookup last 100 messages from room
 Get-WebexTeamsRoom | ? { $_.title -eq "Name" }| Get-WebexTeamsMessage -max 100
 
-#Lookup messages before date
+#Lookup messages before date, Must use a date time object
+Get-WebexTeamsMessage -before 
 
 #Send message to room
 Get-WebexTeamsRoom | ? { $_.title -eq "Name" } | Send-WebexTeamsMessage -text <Text>
@@ -92,14 +94,20 @@ Get-WebexTeamsRoom | ? { $_.title -eq "Name" } | Send-WebexTeamsMessage -text <T
 Send-WebexTeamsMessgae -email <Email> -text <Text>
 
 
+#Edit a message. Messages can only be edited 10 times, further edits after that will trigger an error.
+Set-WebexTeamsMessage -messageId <messageId> -roomId <roomId> -Text "Edited"
+Get-WebexTeamsMessage -messageId <messageId> | Set-WebexTeamsMessage -text "Edited"
 
-#Edit a message. Messages can only be edited 10 times.
-Set-WebexTeamsMessage -messageID <> -Text "Edit"
+
+#Delete a message
+
+
+#Get the 
 ```
+
+To lookup a resource by it's ID, you will need to use the `Get-WebexTeams*Details` cmdlets.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

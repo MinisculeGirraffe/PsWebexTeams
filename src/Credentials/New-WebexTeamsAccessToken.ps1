@@ -20,7 +20,7 @@ function New-WebexTeamsAccessToken {
 
     }
     catch {
-        exit$
+        Write-Error ($_.ErrorDetails.Message | ConvertFrom-Json).message
     }
 
     $res | Add-Member -MemberType NoteProperty -Name issued_at -Value ([DateTimeOffset]::Now.ToUnixTimeSeconds())
