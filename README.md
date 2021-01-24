@@ -61,7 +61,7 @@ To manually issue a new access token, and reset the refresh token’s 90-day tim
 
 ```powershell
 Get-WebexTeamsCredential -Renew
-}
+
 ```
 
 ## Usage
