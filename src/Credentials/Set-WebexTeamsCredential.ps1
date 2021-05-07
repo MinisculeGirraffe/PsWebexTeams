@@ -23,14 +23,23 @@ function  Set-WebexTeamsCredential {
     }
     catch {
         #If no config, initalize an empty hash table
-        $config = @{
-            refreshinfo = @{}
-        }
+        # $config = @{
+        #     refreshinfo = @{}
+        # }
+
+	$config = @{}
     }
+
     $config.token = @{"Authorization" = "Bearer $token" }
+
+    
+
     #Update all properties of the config, that have been passed in.
-    $refreshinfo.psobject.properties | ForEach-Object {
+    if ($refreshinfo) {
+        $config.refreshinfo = @{}
+        $refreshinfo.psobject.properties | ForEach-Object {
         $config.refreshinfo."$($_.name)" = $_.value
+    }
     }
 
 
