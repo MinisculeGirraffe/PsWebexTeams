@@ -1,4 +1,3 @@
-
 function Send-WebexTeamsMessage {
     param (
         $email,
@@ -10,8 +9,8 @@ function Send-WebexTeamsMessage {
         [Parameter(ValueFromPipelineByPropertyName)]
         $personID,
         $parentID,
-        [Parameter(ParameterSetName = 'text')]
-        [string]$markdown
+        [Parameter(ParameterSetName = 'text')][string]$markdown,
+        [string]$name
     )
 
     $body = @{
@@ -24,7 +23,7 @@ function Send-WebexTeamsMessage {
 
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
     try {
-        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential)`
+        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential -name $name)`
             -ContentType "application/json" `
             -uri "https://api.ciscospark.com/v1/messages" `
             -Method Post `

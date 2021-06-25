@@ -1,9 +1,10 @@
 function Get-WebexTeamsCredential {
     param(
+        [Parameter(Mandatory = $true)][string]$name,
         [switch]$Renew
     )
     try {
-        $configpath = Resolve-WebexTeamsConfigPath
+        $configpath = ((Resolve-WebexTeamsConfigPath) -replace ".xml") + "-$name.xml"
         if ($null -eq $configpath) { throw "Unable to resolve config path" }
     }
     catch { exit }
@@ -21,5 +22,8 @@ function Get-WebexTeamsCredential {
             $config = Import-Clixml $configpath
         }
     }
+    $key = Import-Clixml -Path $configpath
+    $config = @{}
+    $config.token = @{"Authorization" = "Bearer " + (([Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($key))))}
     return $config.token
 }

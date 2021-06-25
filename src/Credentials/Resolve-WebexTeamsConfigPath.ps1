@@ -9,5 +9,4 @@ function Resolve-WebexTeamsConfigPath {
     else {
         return $null
     }
-    
 }

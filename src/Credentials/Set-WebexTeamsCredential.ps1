@@ -1,9 +1,10 @@
 function  Set-WebexTeamsCredential {
     param (
-        [Parameter(Mandatory = $true)]
-        [string]$token,
+        [Parameter(Mandatory = $true)][string]$name,
         $refreshinfo
     )
+
+    #region Configure/Check FilePath
     #Check that we can determine the path we should store the config
     try {
         $configpath = Resolve-WebexTeamsConfigPath
@@ -17,23 +18,20 @@ function  Set-WebexTeamsCredential {
         #create the folder
         New-Item -Path $configContainer -Name (Split-Path $configContainer -Leaf) -ItemType Directory
     }
-    try {
-        #import the eixting config
-        $config = Import-Clixml $configpath
+    #endregion
+
+    #Test Keybase
+    if(!(Test-Path ($configContainer + "\PSWebexTeamsConfig-$name.xml" ))){
+        #Create Keybase
+        Read-Host "Please enter API Token" -AsSecureString | Export-Clixml -Path ($configContainer + "\PSWebexTeamsConfig-$name.xml" )
+        Write-Output "Token object created."
+    }else{
+        Write-Output "Token object has already been created...Importing..."
+        $keypath = Import-Clixml -Path ($configContainer + "\PSWebexTeamsConfig-$name.xml")
+        $tokenobj = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($keypath))
+        $config = @{}
+        $config.token = @{"Authorization" = "Bearer $tokenobj" }
     }
-    catch {
-        #If no config, initalize an empty hash table
-        # $config = @{
-        #     refreshinfo = @{}
-        # }
-
-	$config = @{}
-    }
-
-    $config.token = @{"Authorization" = "Bearer $token" }
-
-    
-
     #Update all properties of the config, that have been passed in.
     if ($refreshinfo) {
         $config.refreshinfo = @{}
@@ -41,7 +39,4 @@ function  Set-WebexTeamsCredential {
         $config.refreshinfo."$($_.name)" = $_.value
     }
     }
-
-
-    [void]($config | Export-Clixml -Path $configpath)
 }
