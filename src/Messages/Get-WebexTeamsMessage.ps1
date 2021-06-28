@@ -6,7 +6,8 @@ function Get-WebexTeamsMessage {
         [datetime]$before,
         [string]$beforeMessage,
         [ValidateRange(1, [Int32]::MaxValue)]
-        [int32]$max = [Int32]::MaxValue
+        [int32]$max = [Int32]::MaxValue,
+        [string]$name
     )
     $body = @{
         roomId        = $roomId
@@ -20,7 +21,7 @@ function Get-WebexTeamsMessage {
     
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
     try {
-        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `
+        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential -name $name) `
         -ContentType "application/json" `
         -uri 'https://webexapis.com/v1/messages' `
         -body $body

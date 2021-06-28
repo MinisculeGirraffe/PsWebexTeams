@@ -4,8 +4,8 @@ function  Get-WebexTeamsDirectMessage {
         [Alias('id')]
         $personId,
         $parentId,
-        $email
-        
+        $email,
+        [string]$name 
     )
     $body = @{
         personId    = $personId
@@ -14,7 +14,7 @@ function  Get-WebexTeamsDirectMessage {
     }
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
     try {
-        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential) `
+        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential -name $name) `
             -ContentType "application/json" `
             -uri 'https://webexapis.com/v1/messages/direct' `
             -body $body
