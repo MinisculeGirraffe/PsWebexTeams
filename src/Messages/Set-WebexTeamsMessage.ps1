@@ -6,7 +6,8 @@ function Set-WebexTeamsMessage {
         [Parameter(ValueFromPipelineByPropertyName, mandatory)]
         $roomId,
         $text,
-        $markdown
+        $markdown,
+        [Parameter()][string]$name = ""
     )
     
     $body = @{
@@ -15,18 +16,6 @@ function Set-WebexTeamsMessage {
         markdown  = $markdown
         roomId    = $roomId
     }
-
     ($body.GetEnumerator() | Where-Object { -not $_.Value }) | ForEach-Object { $body.Remove($_.Name) }
-    try {
-        $res = Invoke-RestMethod -Headers (Get-WebexTeamsCredential)`
-            -ContentType "application/json" `
-            -uri "https://api.ciscospark.com/v1/messages/$($body.messageID)" `
-            -Method put `
-            -body ($body | ConvertTo-Json)
-        return $res
-    } 
-    catch {
-        Write-Error ($_.ErrorDetails.Message | ConvertFrom-Json).message
-    }
-
+    return (Invoke-WebexRestMethod -Method PUT -ResourceID ("/messages/$($body.messageId)") -body ($body | ConvertTo-Json))
 }
