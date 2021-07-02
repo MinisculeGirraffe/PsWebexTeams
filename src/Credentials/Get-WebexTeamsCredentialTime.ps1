@@ -13,5 +13,4 @@ function Get-WebexTeamsCredentialTime {
     $refreshExpires = $issueTime.AddSeconds($config.refreshinfo.refresh_token_expires_in)
 
     return New-TimeSpan -Start (Get-Date) -End ($refreshExpires)
-
 }
