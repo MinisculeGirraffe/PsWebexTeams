@@ -33,7 +33,7 @@ Copyright = '(c) Caleb Bartle/Daniel Norred. All rights reserved.'
 Description = 'REST API Module for Webex Teams Collaboration Tools'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.1'
+PowerShellVersion = '5.1'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
